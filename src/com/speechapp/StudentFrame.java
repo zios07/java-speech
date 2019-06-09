@@ -10,6 +10,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.speechapp.models.WordList;
+import com.sun.speech.freetts.Voice;
+import com.sun.speech.freetts.VoiceManager;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class StudentFrame extends javax.swing.JFrame {
     private List<WordList> collectionOfWords = new ArrayList<>();
     
     private Map<String, String> studentAnswers = new HashMap<>();
-
+    private Voice voice = null;
     /**
      * Creates new form StudentFrame
      */
@@ -44,8 +46,19 @@ public class StudentFrame extends javax.swing.JFrame {
         selectedWordInput.setEditable(false);
         wordsList.setEnabled(false);
         submitButton.setEnabled(false);
+        setup();
     }
 
+    public void setup() {
+        
+        VoiceManager vm = VoiceManager.getInstance();
+        
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        voice = VoiceManager.getInstance().getVoice("kevin16");
+        voice.allocate();
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,6 +113,12 @@ public class StudentFrame extends javax.swing.JFrame {
         saveButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButton1ActionPerformed(evt);
+            }
+        });
+
+        studentInputField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                studentInputFieldKeyReleased(evt);
             }
         });
 
@@ -257,6 +276,7 @@ public class StudentFrame extends javax.swing.JFrame {
         }
         answerTrackerLabel.setText("You typed " + studentAnswers.size() + " of " + selectedList.getWords().size() + " words");
         studentInputField.setText("");
+        
     }//GEN-LAST:event_nextWordButtonActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
@@ -279,11 +299,19 @@ public class StudentFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Your score is " + score + " true of " + wordsCount);
         } else {
             String missedAnswers = "";
-            missedAnswers = wrongAnswers.keySet().stream().map((key) -> " you typed '" + wrongAnswers.get(key) + "' for '" + key + "'. ").reduce(missedAnswers, String::concat);
+            missedAnswers = wrongAnswers.keySet().stream().map((key) -> " you typed '" + wrongAnswers.get(key) + "' for '" + key + ". ").reduce(missedAnswers, String::concat);
 ;
-            JOptionPane.showMessageDialog(this, "You missed " + (wordsCount - score) + " words. " + "Here is what you missed :" + missedAnswers);
+            JOptionPane.showMessageDialog(this, "You missed " + wrongAnswers.size() + " words. " + "Here is what you missed :" + missedAnswers);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
+
+    private void studentInputFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_studentInputFieldKeyReleased
+        
+        if(("abcdefghijklmnopqrstuvwxyz").indexOf(evt.getKeyChar()) >= 0 
+                || ("abcdefghijklmnopqrstuvwxyz").toUpperCase().indexOf(evt.getKeyChar()) >= 0) {
+            this.speak(evt.getKeyChar() + "");   
+        }
+    }//GEN-LAST:event_studentInputFieldKeyReleased
 
     public void selectRandomWordFromTheList() {
         if(studentAnswers.size() > 0) { 
@@ -293,6 +321,11 @@ public class StudentFrame extends javax.swing.JFrame {
             String word = this.selectedList.getWords().stream().findFirst().get();
             selectedWordInput.setText(word);
         }
+        this.speak(selectedWordInput.getText());
+    }
+    
+    public void speak(String text) {
+        voice.speak(text);
     }
     
     /**

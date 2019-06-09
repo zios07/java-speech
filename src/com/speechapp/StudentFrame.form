@@ -189,6 +189,9 @@
     <Component class="javax.swing.JLabel" name="selectedListLabel">
     </Component>
     <Component class="javax.swing.JTextField" name="studentInputField">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="studentInputFieldKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="selectedWordInput">
     </Component>
