@@ -215,7 +215,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="loadButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Save"/>
+        <Property name="text" type="java.lang.String" value="Save current data"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadButtonActionPerformed"/>
@@ -223,7 +223,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Load"/>
+        <Property name="text" type="java.lang.String" value="Load data"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButton1ActionPerformed"/>

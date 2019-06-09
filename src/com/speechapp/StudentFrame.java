@@ -5,6 +5,23 @@
  */
 package com.speechapp;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.speechapp.models.WordList;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
@@ -12,6 +29,11 @@ import javax.swing.WindowConstants;
  * @author ZiOS
  */
 public class StudentFrame extends javax.swing.JFrame {
+    private WordList selectedList;
+    private String selectedWord;
+    private List<WordList> collectionOfWords = new ArrayList<>();
+    
+    private Map<String, String> studentAnswers = new HashMap<>();
 
     /**
      * Creates new form StudentFrame
@@ -19,6 +41,9 @@ public class StudentFrame extends javax.swing.JFrame {
     public StudentFrame() {
         initComponents();        
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        selectedWordInput.setEditable(false);
+        wordsList.setEnabled(false);
+        submitButton.setEnabled(false);
     }
 
     /**
@@ -30,22 +55,246 @@ public class StudentFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        wordCollectionsList = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        wordsList = new javax.swing.JList<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        saveButton1 = new javax.swing.JButton();
+        selectedListLabel = new javax.swing.JLabel();
+        studentInputField = new javax.swing.JTextField();
+        selectedWordInput = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        nextWordButton = new javax.swing.JButton();
+        submitButton = new javax.swing.JButton();
+        answerTrackerLabel = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        wordCollectionsList.setModel(new DefaultListModel<WordList>()
+        );
+        wordCollectionsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        wordCollectionsList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                wordCollectionsListMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(wordCollectionsList);
+
+        wordsList.setModel(new DefaultListModel());
+        wordsList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        wordsList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                wordsListMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(wordsList);
+
+        jLabel2.setText("Word collections");
+
+        jLabel3.setText("List of words");
+
+        saveButton1.setText("Load data");
+        saveButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Selected Word");
+
+        jLabel4.setText("Student Input");
+
+        nextWordButton.setText("Next Word");
+        nextWordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextWordButtonActionPerformed(evt);
+            }
+        });
+
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(selectedListLabel)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(nextWordButton)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(submitButton))
+                                    .addComponent(selectedWordInput)
+                                    .addComponent(studentInputField))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel3)))
+                        .addGap(32, 77, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(70, 70, 70)
+                                .addComponent(jLabel2)
+                                .addGap(63, 63, 63))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(90, 90, 90))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(335, 335, 335)
+                .addComponent(answerTrackerLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectedListLabel)
+                    .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(answerTrackerLabel)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(selectedWordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(studentInputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nextWordButton)
+                    .addComponent(submitButton))
+                .addGap(38, 38, 38))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void wordCollectionsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordCollectionsListMouseClicked
+        nextWordButton.setEnabled(true);
+        studentAnswers = new HashMap<>();
+        selectedList = wordCollectionsList.getSelectedValue();
+        DefaultListModel model = (DefaultListModel) wordsList.getModel();
+        model.clear();
+        selectedList.getWords().forEach((word) -> {
+            model.addElement(word);
+        });
+        selectedListLabel.setText("Selected List : " + selectedList.getName());
+        selectRandomWordFromTheList();
+        answerTrackerLabel.setText("You typed " + studentAnswers.size() + " of " + selectedList.getWords().size() + " words");
+    }//GEN-LAST:event_wordCollectionsListMouseClicked
+
+    private void saveButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButton1ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to load data from");
+        fileChooser.setApproveButtonText("Load");
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToLoad = fileChooser.getSelectedFile();
+            try (JsonReader reader = new JsonReader(new FileReader(fileToLoad.getAbsolutePath()))) {
+                Gson gson = new GsonBuilder().create();
+                java.lang.reflect.Type listType = new TypeToken<ArrayList<WordList>>(){}.getType();
+                collectionOfWords = gson.fromJson(reader, listType);
+                DefaultListModel model = (DefaultListModel) wordCollectionsList.getModel();
+                model.clear();
+                collectionOfWords.forEach((item) -> {
+                    model.addElement(item);
+                });
+                
+            } catch (IOException ex) {
+                Logger.getLogger(TeacherFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_saveButton1ActionPerformed
+
+    private void wordsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordsListMouseClicked
+        selectedWord = wordsList.getSelectedValue();
+        selectedWordInput.setText(selectedWord);
+    }//GEN-LAST:event_wordsListMouseClicked
+
+    private void nextWordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextWordButtonActionPerformed
+        String studentInput = studentInputField.getText();
+        String word = selectedWordInput.getText();
+        this.studentAnswers.put(word, studentInput);
+        if(this.studentAnswers.size() == this.selectedList.getWords().size()) {
+            nextWordButton.setEnabled(false);
+            submitButton.setEnabled(true);
+        } else {
+            this.selectRandomWordFromTheList();
+        }
+        answerTrackerLabel.setText("You typed " + studentAnswers.size() + " of " + selectedList.getWords().size() + " words");
+        studentInputField.setText("");
+    }//GEN-LAST:event_nextWordButtonActionPerformed
+
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
+        // score calculation logic
+        
+        Map<String, String> wrongAnswers = new HashMap<>();
+        int score = 0;
+        int wordsCount = this.selectedList.getWords().size();
+        
+        for(int i = 0; i < studentAnswers.size() ; i++) {
+            String word = this.selectedList.getWords().get(i);
+            String studentInput = studentAnswers.get(word);
+            if(word.equals(studentInput)) {
+                score ++;
+            } else {
+                wrongAnswers.put(word, studentInput);
+            }
+        }
+        if(wrongAnswers.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Your score is " + score + " true of " + wordsCount);
+        } else {
+            String missedAnswers = "";
+            missedAnswers = wrongAnswers.keySet().stream().map((key) -> " you typed '" + wrongAnswers.get(key) + "' for '" + key + "'. ").reduce(missedAnswers, String::concat);
+;
+            JOptionPane.showMessageDialog(this, "You missed " + (wordsCount - score) + " words. " + "Here is what you missed :" + missedAnswers);
+        }
+    }//GEN-LAST:event_submitButtonActionPerformed
+
+    public void selectRandomWordFromTheList() {
+        if(studentAnswers.size() > 0) { 
+            String word = this.selectedList.getWords().get(this.studentAnswers.size());
+            selectedWordInput.setText(word);
+        } else {
+            String word = this.selectedList.getWords().stream().findFirst().get();
+            selectedWordInput.setText(word);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -82,5 +331,20 @@ public class StudentFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel answerTrackerLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton nextWordButton;
+    private javax.swing.JButton saveButton1;
+    private javax.swing.JLabel selectedListLabel;
+    private javax.swing.JTextField selectedWordInput;
+    private javax.swing.JTextField studentInputField;
+    private javax.swing.JButton submitButton;
+    private javax.swing.JList<WordList> wordCollectionsList;
+    private javax.swing.JList<String> wordsList;
     // End of variables declaration//GEN-END:variables
 }

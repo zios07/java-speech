@@ -107,14 +107,14 @@ public class TeacherFrame extends javax.swing.JFrame {
 
         jLabel4.setText("List name");
 
-        loadButton.setText("Save");
+        loadButton.setText("Save current data");
         loadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadButtonActionPerformed(evt);
             }
         });
 
-        saveButton1.setText("Load");
+        saveButton1.setText("Load data");
         saveButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButton1ActionPerformed(evt);
