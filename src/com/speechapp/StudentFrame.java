@@ -58,8 +58,10 @@ public class StudentFrame extends javax.swing.JFrame {
         
         VoiceManager vm = VoiceManager.getInstance();
         
+        VoiceManager.getInstance().getVoices();
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         voice = VoiceManager.getInstance().getVoice("kevin16");
+        voice.setRate(200);
         voice.allocate();
         
     }
