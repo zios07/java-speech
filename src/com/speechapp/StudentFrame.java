@@ -43,6 +43,9 @@ public class StudentFrame extends javax.swing.JFrame {
     public StudentFrame() {
         initComponents();        
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        wordsList.setVisible(false);
+        jLabel2.setVisible(false);
+        jLabel3.setVisible(false);
         selectedWordInput.setEditable(false);
         wordsList.setEnabled(false);
         submitButton.setEnabled(false);
@@ -116,11 +119,14 @@ public class StudentFrame extends javax.swing.JFrame {
             }
         });
 
+        studentInputField.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
         studentInputField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 studentInputFieldKeyReleased(evt);
             }
         });
+
+        selectedWordInput.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
 
         jLabel1.setText("Selected Word");
 
@@ -161,8 +167,7 @@ public class StudentFrame extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(submitButton))
                                     .addComponent(selectedWordInput)
-                                    .addComponent(studentInputField))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(studentInputField)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(saveButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -190,9 +195,9 @@ public class StudentFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2)
@@ -205,11 +210,11 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addComponent(answerTrackerLabel)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(selectedWordInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectedWordInput, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(studentInputField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(studentInputField, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
