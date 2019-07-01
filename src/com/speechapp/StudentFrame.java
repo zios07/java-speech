@@ -12,6 +12,7 @@ import com.google.gson.stream.JsonReader;
 import com.speechapp.models.WordList;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class StudentFrame extends javax.swing.JFrame {
         wordsList.setEnabled(false);
         submitButton.setEnabled(false);
         setup();
+        this.getContentPane().setBackground(new Color(53, 212, 97));
     }
 
     public void setup() {
@@ -128,10 +130,13 @@ public class StudentFrame extends javax.swing.JFrame {
 
         selectedWordInput.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
 
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         jLabel1.setText("Selected Word");
 
+        jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         jLabel4.setText("Student Input");
 
+        nextWordButton.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         nextWordButton.setText("Next Word");
         nextWordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +144,7 @@ public class StudentFrame extends javax.swing.JFrame {
             }
         });
 
+        submitButton.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         submitButton.setText("Submit");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
